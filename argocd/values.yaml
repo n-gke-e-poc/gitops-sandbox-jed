@@ -1,0 +1,21 @@
+redis-ha:
+  enabled: true
+  
+  haproxy:
+    extraConfig: |
+      global
+        maxconn 5000
+
+controller:
+  replicas: 2
+
+server:
+  replicas: 2
+  ingress:
+    enabled: false
+
+repoServer:
+  replicas: 2
+
+applicationSet:
+  replicas: 2
