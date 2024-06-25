@@ -1,3 +1,17 @@
+configs:
+  cm:
+    accounts.jjk: apiKey, login
+    accounts.jjk.enabled: 'true'
+    exec.enabled: true
+
+  params:
+    server.insecure: true
+    applicationsetcontroller.enable.progressive.syncs: true
+
+  rbac:
+    policy.csv: |
+      g, jjk, role:admin
+
 redis-ha:
   enabled: true
   
