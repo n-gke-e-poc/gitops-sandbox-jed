@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-services
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/n-gke-e-poc/gitops-sandbox-jed.git
+              revision: main
+              directories:
+                - path: 'services/*'
+              pathParamPrefix: service
+          - git:
+              repoURL: https://github.com/n-gke-e-poc/gitops-sandbox-jed.git
+              revision: main
+              files:
+                - path: '{{ .service.path.path }}/*/config.yaml'
+              pathParamPrefix: cluster
+  template:
+    metadata:
+      name: '{{ .service.path.basenameNormalized }}-{{ .cluster.path.basenameNormalized }}'
+      labels:
+        service-name: '{{ .service.path.basenameNormalized }}'
+    spec:
+      project: infrastructure
+      destination:
+        name: '{{ .cluster.path.basenameNormalized }}'
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+        - CreateNamespace=true
+        - PruneLast=true
+  templatePatch: |
+    spec:
+    {{ $path := .cluster.path.path }}
+      sources:
+      - chart: '{{ .chart.name }}'
+        repoURL: '{{ .chart.repo }}'
+        targetRevision: '{{ .chart.version }}'
+        helm:
+          releaseName: '{{ .chart.name }}'
+          skipCrds: false
+          valueFiles:
+          {{- if empty .chart.values }}
+            - '$values/{{ $path }}/values.yaml'
+          {{- else }}
+            {{- range $valuesFile := .chart.values }}
+            - '$values/{{ $path }}/{{ $valuesFile }}'
+            {{- end }}
+          {{- end }}
+      - repoURL: https://github.com/n-gke-e-poc/gitops-sandbox-jed.git
+        targetRevision: main
+        ref: values
+    {{- if .extraManifests.sync }}
+      - repoURL: https://github.com/n-gke-e-poc/gitops-sandbox-jed.git
+        targetRevision: main
+        path: '{{ $path }}/{{ .extraManifests.directory | default "extra" }}'
+        directory:
+          recurse: {{ .extraManifests.recurse | default false }}
+    {{- end }}
