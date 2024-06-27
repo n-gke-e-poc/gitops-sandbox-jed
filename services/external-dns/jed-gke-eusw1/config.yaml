@@ -1,0 +1,13 @@
+chart:
+  name: external-dns
+  repo: https://kubernetes-sigs.github.io/external-dns
+  version: 1.14.5
+  values:
+  - values.yaml
+
+namespace: external-dns
+
+extraManifests:
+  sync: false
+  recurse: true
+  directory: extra

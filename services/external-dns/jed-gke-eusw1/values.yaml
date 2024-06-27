@@ -1,0 +1,12 @@
+sources:
+- service
+- ingress
+- gateway-httproute
+
+provider:
+  name: google
+
+domainFilters:
+- jed.gkepoc.net
+
+logFormat: json
