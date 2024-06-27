@@ -1,0 +1,38 @@
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: backend-whereami-cloudarmor
+  namespace: whereami
+spec:
+  default:
+    securityPolicy: test
+  targetRef:
+    group: ""
+    kind: Service
+    name: whereami
+---
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: backend-whereami-central-cloudarmor
+  namespace: whereami
+spec:
+  default:
+    securityPolicy: test
+  targetRef:
+    group: net.gke.io
+    kind: ServiceImport
+    name: whereami-central
+---
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: backend-whereami-southwest-cloudarmor
+  namespace: whereami
+spec:
+  default:
+    securityPolicy: test
+  targetRef:
+    group: net.gke.io
+    kind: ServiceImport
+    name: whereami-southwest
