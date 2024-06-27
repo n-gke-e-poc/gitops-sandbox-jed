@@ -17,7 +17,7 @@ metadata:
   name: internal-http-mc
   namespace: whereami
 spec:
-  gatewayClassName: gke-l7-rilb-mc
+  gatewayClassName: gke-l7-gxlb-mc
   listeners:
   - name: http
     protocol: HTTP
