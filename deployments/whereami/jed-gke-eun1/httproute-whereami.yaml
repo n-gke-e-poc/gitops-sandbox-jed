@@ -17,7 +17,7 @@ spec:
     - group: net.gke.io
       kind: ServiceImport
       name: whereami-central
-      port: 8080
+      port: 80
   - matches:
     - path:
         type: PathPrefix
@@ -26,9 +26,9 @@ spec:
     - group: net.gke.io
       kind: ServiceImport
       name: whereami-southwest
-      port: 8080
+      port: 80
   - backendRefs:
     - group: net.gke.io
       kind: ServiceImport
       name: whereami
-      port: 8080
+      port: 80
