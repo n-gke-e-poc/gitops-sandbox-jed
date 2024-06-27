@@ -7,8 +7,8 @@ spec:
   default:
     securityPolicy: test
   targetRef:
-    group: ""
-    kind: Service
+    group: net.gke.io
+    kind: ServiceImport
     name: whereami
 ---
 apiVersion: networking.gke.io/v1
