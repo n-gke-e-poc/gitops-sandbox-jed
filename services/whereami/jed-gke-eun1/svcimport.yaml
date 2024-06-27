@@ -1,0 +1,17 @@
+apiVersion: net.gke.io/v1
+kind: ServiceImport
+metadata:
+  name: whereami-central
+  namespace: whereami
+---
+apiVersion: net.gke.io/v1
+kind: ServiceImport
+metadata:
+  name: whereami-southwest
+  namespace: whereami
+---
+apiVersion: net.gke.io/v1
+kind: ServiceImport
+metadata:
+  name: whereami
+  namespace: whereami
